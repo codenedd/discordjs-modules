@@ -3,16 +3,9 @@
   "version": "0.1.0",
   "description": "Discord.js modules handler that allows you handle all discord components like menus, modals and button in one module directory.",
   "main": "index.js",
-  "scripts": {
-    "dev": "nodemon src/index.ts"
-  },
+  "types": "discordjs-modules.d.ts",
   "author": "codened",
   "license": "ISC",
-  "devDependencies": {
-    "nodemon": "^3.1.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.4.4"
-  },
   "dependencies": {
     "discord.js": "^14.14.1"
   }
