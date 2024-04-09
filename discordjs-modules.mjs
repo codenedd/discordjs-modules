@@ -1,60 +1,41 @@
-"use strict";
-var __create = Object.create;
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __getProtoOf = Object.getPrototypeOf;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
-};
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
-};
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x, {
+  get: (a, b) => (typeof require !== "undefined" ? require : a)[b]
+}) : x)(function(x) {
+  if (typeof require !== "undefined")
+    return require.apply(this, arguments);
+  throw Error('Dynamic require of "' + x + '" is not supported');
+});
+
+// node_modules/tsup/assets/esm_shims.js
+import { fileURLToPath } from "url";
+import path from "path";
+var getFilename = () => fileURLToPath(import.meta.url);
+var getDirname = () => path.dirname(getFilename());
+var __dirname = /* @__PURE__ */ getDirname();
 
 // src/discordjs-modules.ts
-var discordjs_modules_exports = {};
-__export(discordjs_modules_exports, {
-  default: () => discordjs_modules_default
-});
-module.exports = __toCommonJS(discordjs_modules_exports);
-var import_discord3 = require("discord.js");
+import { Collection as Collection2, Events } from "discord.js";
 
 // src/readers/modules-reader.ts
-var import_path4 = __toESM(require("path"));
-var import_fs4 = __toESM(require("fs"));
+import path5 from "path";
+import fs4 from "fs";
 
 // src/readers/components-reader.ts
-var import_path = __toESM(require("path"));
-var import_fs = __toESM(require("fs"));
+import path2 from "path";
+import fs from "fs";
 function readComponents(modules, componentsName) {
   const componentsCollection = /* @__PURE__ */ new Map();
-  for (const module2 of modules) {
-    if (module2.isDirectory()) {
-      const compsPath = import_path.default.join(module2.path, `${module2.name}/${componentsName}`);
-      const isCompsDirectoryExists = import_fs.default.existsSync(compsPath);
+  for (const module of modules) {
+    if (module.isDirectory()) {
+      const compsPath = path2.join(module.path, `${module.name}/${componentsName}`);
+      const isCompsDirectoryExists = fs.existsSync(compsPath);
       if (isCompsDirectoryExists) {
-        const comps = import_fs.default.readdirSync(compsPath, { withFileTypes: true });
+        const comps = fs.readdirSync(compsPath, { withFileTypes: true });
         if (comps?.length) {
           for (const component of comps) {
             if (component.name.endsWith(".ts") || component.name.endsWith(".js")) {
               const componentPath = `${compsPath}/${component.name}`;
-              const compData = require(componentPath);
+              const compData = __require(componentPath);
               if (componentsCollection.has(compData.customId))
                 throw new Error(`CustomId: ${compData.customId} is duplicated! Path: ${componentPath}`);
               componentsCollection.set(compData.customId, compData);
@@ -70,36 +51,36 @@ function readComponents(modules, componentsName) {
 }
 
 // src/readers/events-reader.ts
-var import_path2 = __toESM(require("path"));
-var import_fs2 = __toESM(require("fs"));
+import path3 from "path";
+import fs2 from "fs";
 function readEvents(modules) {
   const eventsCollection = /* @__PURE__ */ new Map();
-  const globalEventsPath = import_path2.default.join(import_path2.default.dirname(__dirname), `/events`);
-  const isGlobalEventsDirectoryExists = import_fs2.default.existsSync(globalEventsPath);
+  const globalEventsPath = path3.join(path3.dirname(__dirname), `/events`);
+  const isGlobalEventsDirectoryExists = fs2.existsSync(globalEventsPath);
   if (isGlobalEventsDirectoryExists) {
-    const globalEvents = import_fs2.default.readdirSync(globalEventsPath, { withFileTypes: true });
+    const globalEvents = fs2.readdirSync(globalEventsPath, { withFileTypes: true });
     if (globalEvents?.length) {
       for (const globalEvent of globalEvents) {
         if (globalEvent.name.endsWith(".ts") || globalEvent.name.endsWith(".js")) {
           const eventPath = `${globalEventsPath}/${globalEvent.name}`;
-          const eventData = require(eventPath);
+          const eventData = __require(eventPath);
           eventsCollection.set("global", eventData);
         }
       }
     }
   }
-  for (const module2 of modules) {
-    if (module2.isDirectory()) {
-      const eventsPath = import_path2.default.join(module2.path, `${module2.name}/events`);
-      const isEventsDirectoryExists = import_fs2.default.existsSync(eventsPath);
+  for (const module of modules) {
+    if (module.isDirectory()) {
+      const eventsPath = path3.join(module.path, `${module.name}/events`);
+      const isEventsDirectoryExists = fs2.existsSync(eventsPath);
       if (isEventsDirectoryExists) {
-        const events = import_fs2.default.readdirSync(eventsPath, { withFileTypes: true });
+        const events = fs2.readdirSync(eventsPath, { withFileTypes: true });
         if (events?.length) {
           for (const event of events) {
             if (event.name.endsWith(".ts") || event.name.endsWith(".js")) {
               const eventPath = `${eventsPath}/${event.name}`;
-              const eventData = require(eventPath);
-              eventsCollection.set(module2.name, eventData);
+              const eventData = __require(eventPath);
+              eventsCollection.set(module.name, eventData);
             }
           }
         }
@@ -112,19 +93,19 @@ function readEvents(modules) {
 }
 
 // src/readers/commands-reader.ts
-var import_path3 = __toESM(require("path"));
-var import_fs3 = __toESM(require("fs"));
+import path4 from "path";
+import fs3 from "fs";
 function readCommands(modules) {
   const commandsCollection = /* @__PURE__ */ new Map();
-  const globalCommandssPath = import_path3.default.join(import_path3.default.dirname(__dirname), `/commands`);
-  const isGlobalCommandsDirectoryExists = import_fs3.default.existsSync(globalCommandssPath);
+  const globalCommandssPath = path4.join(path4.dirname(__dirname), `/commands`);
+  const isGlobalCommandsDirectoryExists = fs3.existsSync(globalCommandssPath);
   if (isGlobalCommandsDirectoryExists) {
-    const globalCommands = import_fs3.default.readdirSync(globalCommandssPath, { withFileTypes: true });
+    const globalCommands = fs3.readdirSync(globalCommandssPath, { withFileTypes: true });
     if (globalCommands?.length) {
       for (const globalCommand of globalCommands) {
         if (globalCommand.name.endsWith(".ts") || globalCommand.name.endsWith(".js")) {
           const commandPath = `${globalCommandssPath}/${globalCommand.name}`;
-          const commandData = require(commandPath);
+          const commandData = __require(commandPath);
           if (commandsCollection.has(commandData.data.name))
             throw new Error(`Duplicated command: ${commandData.data.name}; in ${commandPath}`);
           commandsCollection.set(commandData.data.name, commandData);
@@ -132,17 +113,17 @@ function readCommands(modules) {
       }
     }
   }
-  for (const module2 of modules) {
-    if (module2.isDirectory()) {
-      const commandsPath = import_path3.default.join(module2.path, `${module2.name}/commands`);
-      const isCommandsDirectoryExists = import_fs3.default.existsSync(commandsPath);
+  for (const module of modules) {
+    if (module.isDirectory()) {
+      const commandsPath = path4.join(module.path, `${module.name}/commands`);
+      const isCommandsDirectoryExists = fs3.existsSync(commandsPath);
       if (isCommandsDirectoryExists) {
-        const commands = import_fs3.default.readdirSync(commandsPath, { withFileTypes: true });
+        const commands = fs3.readdirSync(commandsPath, { withFileTypes: true });
         if (commands?.length) {
           for (const command of commands) {
             if (command.name.endsWith(".ts") || command.name.endsWith(".js")) {
               const commandPath = `${commandsPath}/${command.name}`;
-              const commandData = require(commandPath);
+              const commandData = __require(commandPath);
               if (commandsCollection.has(commandData.data.name))
                 throw new Error(`Duplicated command: ${commandData.data.name}; in ${commandPath}`);
               commandsCollection.set(commandData.data.name, commandData);
@@ -159,13 +140,13 @@ function readCommands(modules) {
 
 // src/readers/modules-reader.ts
 function readModules() {
-  const modulesPath = import_path4.default.join(__dirname, "../modules");
-  const modulesExists = import_fs4.default.existsSync(modulesPath);
+  const modulesPath = path5.join(__dirname, "../modules");
+  const modulesExists = fs4.existsSync(modulesPath);
   if (!modulesExists) {
     console.log("\x1B[33m%s\x1B[0m", "Modules directory not found. Creating....        |");
-    import_fs4.default.mkdirSync(modulesPath);
+    fs4.mkdirSync(modulesPath);
   }
-  const modules = import_fs4.default.readdirSync(modulesPath, { withFileTypes: true });
+  const modules = fs4.readdirSync(modulesPath, { withFileTypes: true });
   console.log("\x1B[33m%s\x1B[0m", "------------ Loading modules files... ------------");
   const buttons = readComponents(modules, "buttons");
   const menus = readComponents(modules, "menus");
@@ -206,7 +187,7 @@ function handleModalsInteraction(interaction, modals) {
 }
 
 // src/interactions/commands-interactions.ts
-var import_discord = require("discord.js");
+import { Collection } from "discord.js";
 async function handleCommandsInteraction(client, interaction, commands) {
   if (interaction.isChatInputCommand()) {
     console.time("[DISCORDJS MODULES] Command interaction execute time");
@@ -217,7 +198,7 @@ async function handleCommandsInteraction(client, interaction, commands) {
     }
     const { cooldowns } = client;
     if (!cooldowns.has(command.data.name)) {
-      cooldowns.set(command.data.name, new import_discord.Collection());
+      cooldowns.set(command.data.name, new Collection());
     }
     const now = Date.now();
     const timestamps = cooldowns.get(command.data.name);
@@ -255,15 +236,15 @@ async function handleCommandsInteraction(client, interaction, commands) {
 }
 
 // src/api/synchronize-commands.ts
-var import_discord2 = require("discord.js");
+import { REST, Routes } from "discord.js";
 async function synchronizeSlashCommands(client, token, commands) {
-  const rest = new import_discord2.REST({ version: "10" }).setToken(token);
+  const rest = new REST({ version: "10" }).setToken(token);
   const commandsData = [...commands.values()].map((cmd) => cmd.data.toJSON());
   await (async () => {
     try {
       if (client.user) {
         console.log("\x1B[35m%s\x1B[0m", `Started refreshing ${commandsData.length} application slash commands.`);
-        await rest.put(import_discord2.Routes.applicationCommands(client.user.id), { body: commandsData });
+        await rest.put(Routes.applicationCommands(client.user.id), { body: commandsData });
         console.log("\x1B[35m%s\x1B[0m", `Successfully reloaded ${commandsData.length} application slash commands.`);
       }
     } catch (error) {
@@ -280,8 +261,8 @@ var DiscordJSModules = {
     console.log("\x1B[33m%s\x1B[0m", "--------------------------------------------------");
     const modules = readModules();
     client.commands = modules.commands;
-    client.cooldowns = new import_discord3.Collection();
-    client.once(import_discord3.Events.ClientReady, (client2) => {
+    client.cooldowns = new Collection2();
+    client.once(Events.ClientReady, (client2) => {
       console.log("\x1B[33m%s\x1B[0m", "--------------------------------------------------");
       console.log("\x1B[33m%s\x1B[0m", "--- Synchronizing slash commands on the server ---");
       synchronizeSlashCommands(client2, token, modules.commands).then(() => {
@@ -289,7 +270,7 @@ var DiscordJSModules = {
         console.log("\x1B[33m%s\x1B[0m", "------- Everything done and ready to work! -------");
       });
     });
-    client.on(import_discord3.Events.InteractionCreate, async (interaction) => {
+    client.on(Events.InteractionCreate, async (interaction) => {
       try {
         await handleCommandsInteraction(client, interaction, modules.commands);
         handleButtonsInteraction(interaction, modules.buttons);
@@ -308,3 +289,6 @@ var DiscordJSModules = {
   }
 };
 var discordjs_modules_default = DiscordJSModules;
+export {
+  discordjs_modules_default as default
+};
