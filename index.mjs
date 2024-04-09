@@ -256,12 +256,13 @@ async function synchronizeSlashCommands(client, token, commands) {
 // src/discordjs-modules.ts
 var DiscordJSModules = {
   init(client, token) {
+    const moduleClient = client;
     console.log("\x1B[33m%s\x1B[0m", "--------------------------------------------------");
     console.log("\x1B[33m%s\x1B[0m", "-------- DiscordJS Modules Initialization... -----");
     console.log("\x1B[33m%s\x1B[0m", "--------------------------------------------------");
     const modules = readModules();
-    client.commands = modules.commands;
-    client.cooldowns = new Collection2();
+    moduleClient.commands = modules.commands;
+    moduleClient.cooldowns = new Collection2();
     client.once(Events.ClientReady, (client2) => {
       console.log("\x1B[33m%s\x1B[0m", "--------------------------------------------------");
       console.log("\x1B[33m%s\x1B[0m", "--- Synchronizing slash commands on the server ---");
@@ -272,7 +273,7 @@ var DiscordJSModules = {
     });
     client.on(Events.InteractionCreate, async (interaction) => {
       try {
-        await handleCommandsInteraction(client, interaction, modules.commands);
+        await handleCommandsInteraction(moduleClient, interaction, modules.commands);
         handleButtonsInteraction(interaction, modules.buttons);
         handleMenusInteraction(interaction, modules.menus);
         handleModalsInteraction(interaction, modules.modals);
