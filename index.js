@@ -27,12 +27,14 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/discordjs-modules.ts
-var discordjs_modules_exports = {};
-__export(discordjs_modules_exports, {
-  default: () => discordjs_modules_default
+// src/index.ts
+var src_exports = {};
+__export(src_exports, {
+  DiscordJSModules: () => DiscordJSModules
 });
-module.exports = __toCommonJS(discordjs_modules_exports);
+module.exports = __toCommonJS(src_exports);
+
+// src/discordjs-modules.ts
 var import_discord3 = require("discord.js");
 
 // src/readers/modules-reader.ts
@@ -307,4 +309,7 @@ var DiscordJSModules = {
     }
   }
 };
-var discordjs_modules_default = DiscordJSModules;
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  DiscordJSModules
+});

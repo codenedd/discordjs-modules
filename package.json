@@ -2,9 +2,9 @@
   "name": "@private/discordjs-modules",
   "version": "0.1.0",
   "description": "Discord.js modules handler that allows you handle all discord components like menus, modals and button in one module directory.",
-  "main": "./dist/discordjs-modules.js",
-  "module": "./dist/discordjs-modules.mjs",
-  "types": "./dist/discordjs-modules.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "tsup"

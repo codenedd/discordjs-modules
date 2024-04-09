@@ -288,7 +288,6 @@ var DiscordJSModules = {
     }
   }
 };
-var discordjs_modules_default = DiscordJSModules;
 export {
-  discordjs_modules_default as default
+  DiscordJSModules
 };
