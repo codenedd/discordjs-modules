@@ -161,7 +161,7 @@ function readCommands(modules, rootDir) {
 
 // src/readers/modules-reader.ts
 function readModules(options) {
-  const rootDir = options?.srcDir ? import_path4.default.join(process.cwd(), options.srcDir) : process.cwd();
+  const rootDir = options?.srcDir ? options.srcDir : process.cwd();
   const modulesPath = import_path4.default.join(rootDir, "/modules");
   const modulesExists = import_fs4.default.existsSync(modulesPath);
   if (!modulesExists) {

@@ -133,7 +133,7 @@ function readCommands(modules, rootDir) {
 
 // src/readers/modules-reader.ts
 function readModules(options) {
-  const rootDir = options?.srcDir ? path4.join(process.cwd(), options.srcDir) : process.cwd();
+  const rootDir = options?.srcDir ? options.srcDir : process.cwd();
   const modulesPath = path4.join(rootDir, "/modules");
   const modulesExists = fs4.existsSync(modulesPath);
   if (!modulesExists) {
