@@ -6,28 +6,21 @@ var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require
   throw Error('Dynamic require of "' + x + '" is not supported');
 });
 
-// node_modules/tsup/assets/esm_shims.js
-import { fileURLToPath } from "url";
-import path from "path";
-var getFilename = () => fileURLToPath(import.meta.url);
-var getDirname = () => path.dirname(getFilename());
-var __dirname = /* @__PURE__ */ getDirname();
-
 // src/discordjs-modules.ts
 import { Collection as Collection2, Events } from "discord.js";
 
 // src/readers/modules-reader.ts
-import path5 from "path";
+import path4 from "path";
 import fs4 from "fs";
 
 // src/readers/components-reader.ts
-import path2 from "path";
+import path from "path";
 import fs from "fs";
 function readComponents(modules, componentsName) {
   const componentsCollection = /* @__PURE__ */ new Map();
   for (const module of modules) {
     if (module.isDirectory()) {
-      const compsPath = path2.join(module.path, `${module.name}/${componentsName}`);
+      const compsPath = path.join(module.path, `${module.name}/${componentsName}`);
       const isCompsDirectoryExists = fs.existsSync(compsPath);
       if (isCompsDirectoryExists) {
         const comps = fs.readdirSync(compsPath, { withFileTypes: true });
@@ -51,11 +44,11 @@ function readComponents(modules, componentsName) {
 }
 
 // src/readers/events-reader.ts
-import path3 from "path";
+import path2 from "path";
 import fs2 from "fs";
-function readEvents(modules) {
+function readEvents(modules, rootDir) {
   const eventsCollection = /* @__PURE__ */ new Map();
-  const globalEventsPath = path3.join(path3.dirname(__dirname), `/events`);
+  const globalEventsPath = path2.join(rootDir, `/events`);
   const isGlobalEventsDirectoryExists = fs2.existsSync(globalEventsPath);
   if (isGlobalEventsDirectoryExists) {
     const globalEvents = fs2.readdirSync(globalEventsPath, { withFileTypes: true });
@@ -71,7 +64,7 @@ function readEvents(modules) {
   }
   for (const module of modules) {
     if (module.isDirectory()) {
-      const eventsPath = path3.join(module.path, `${module.name}/events`);
+      const eventsPath = path2.join(module.path, `${module.name}/events`);
       const isEventsDirectoryExists = fs2.existsSync(eventsPath);
       if (isEventsDirectoryExists) {
         const events = fs2.readdirSync(eventsPath, { withFileTypes: true });
@@ -93,11 +86,11 @@ function readEvents(modules) {
 }
 
 // src/readers/commands-reader.ts
-import path4 from "path";
+import path3 from "path";
 import fs3 from "fs";
-function readCommands(modules) {
+function readCommands(modules, rootDir) {
   const commandsCollection = /* @__PURE__ */ new Map();
-  const globalCommandssPath = path4.join(path4.dirname(__dirname), `/commands`);
+  const globalCommandssPath = path3.join(rootDir, `/commands`);
   const isGlobalCommandsDirectoryExists = fs3.existsSync(globalCommandssPath);
   if (isGlobalCommandsDirectoryExists) {
     const globalCommands = fs3.readdirSync(globalCommandssPath, { withFileTypes: true });
@@ -115,7 +108,7 @@ function readCommands(modules) {
   }
   for (const module of modules) {
     if (module.isDirectory()) {
-      const commandsPath = path4.join(module.path, `${module.name}/commands`);
+      const commandsPath = path3.join(module.path, `${module.name}/commands`);
       const isCommandsDirectoryExists = fs3.existsSync(commandsPath);
       if (isCommandsDirectoryExists) {
         const commands = fs3.readdirSync(commandsPath, { withFileTypes: true });
@@ -139,11 +132,12 @@ function readCommands(modules) {
 }
 
 // src/readers/modules-reader.ts
-function readModules() {
-  const modulesPath = path5.join(__dirname, "../modules");
+function readModules(options) {
+  const rootDir = options?.srcDir ? path4.join(process.cwd(), options.srcDir) : process.cwd();
+  const modulesPath = path4.join(rootDir, "/modules");
   const modulesExists = fs4.existsSync(modulesPath);
   if (!modulesExists) {
-    console.log("\x1B[33m%s\x1B[0m", "Modules directory not found. Creating....        |");
+    console.log("\x1B[33m%s\x1B[0m", `Modules directory not found. Creating in ${modulesPath}....`);
     fs4.mkdirSync(modulesPath);
   }
   const modules = fs4.readdirSync(modulesPath, { withFileTypes: true });
@@ -151,8 +145,8 @@ function readModules() {
   const buttons = readComponents(modules, "buttons");
   const menus = readComponents(modules, "menus");
   const modals = readComponents(modules, "modals");
-  const events = readEvents(modules);
-  const commands = readCommands(modules);
+  const events = readEvents(modules, rootDir);
+  const commands = readCommands(modules, rootDir);
   return { commands, events, buttons, menus, modals };
 }
 
@@ -255,12 +249,12 @@ async function synchronizeSlashCommands(client, token, commands) {
 
 // src/discordjs-modules.ts
 var DiscordJSModules = {
-  init(client, token) {
+  init(client, token, options) {
     const moduleClient = client;
     console.log("\x1B[33m%s\x1B[0m", "--------------------------------------------------");
     console.log("\x1B[33m%s\x1B[0m", "-------- DiscordJS Modules Initialization... -----");
     console.log("\x1B[33m%s\x1B[0m", "--------------------------------------------------");
-    const modules = readModules();
+    const modules = readModules(options);
     moduleClient.commands = modules.commands;
     moduleClient.cooldowns = new Collection2();
     client.once(Events.ClientReady, (client2) => {

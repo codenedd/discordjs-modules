@@ -1,8 +1,4 @@
-import { Client, ButtonInteraction, AnySelectMenuInteraction, ModalSubmitInteraction, ClientEvents, SlashCommandBuilder, ChatInputCommandInteraction, AutocompleteInteraction, Collection } from 'discord.js';
-
-declare const DiscordJSModules: {
-    init(client: Client, token: string): void;
-};
+import { ButtonInteraction, AnySelectMenuInteraction, ModalSubmitInteraction, ClientEvents, SlashCommandBuilder, ChatInputCommandInteraction, AutocompleteInteraction, Client, Collection } from 'discord.js';
 
 interface ButtonModule {
     customId: string;
@@ -31,5 +27,12 @@ interface ModulesClient extends Client {
     commands: Map<string, CommandModule>;
     cooldowns: Collection<string, Collection<string, number>>;
 }
+interface InitOptions {
+    srcDir?: string;
+}
 
-export { type ButtonModule, type CommandModule, DiscordJSModules, type EventModule, type MenuModule, type ModalModule, type ModulesClient };
+declare const DiscordJSModules: {
+    init(client: Client, token: string, options?: InitOptions): void;
+};
+
+export { type ButtonModule, type CommandModule, DiscordJSModules, type EventModule, type InitOptions, type MenuModule, type ModalModule, type ModulesClient };
