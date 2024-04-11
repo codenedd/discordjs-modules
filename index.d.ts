@@ -12,10 +12,10 @@ interface ModalModule {
     customId: string;
     execute: (interaction: ModalSubmitInteraction) => Promise<unknown>;
 }
-interface EventModule {
-    name: keyof ClientEvents;
+interface EventModule<E extends keyof ClientEvents> {
+    name: E;
     once?: boolean;
-    execute: (...args: ClientEvents[keyof ClientEvents]) => Awaitable<void>;
+    execute: (...args: ClientEvents[E]) => Awaitable<void>;
 }
 interface CommandModule {
     data: SlashCommandBuilder;
