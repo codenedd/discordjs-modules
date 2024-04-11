@@ -12,7 +12,7 @@ interface ModalModule {
     customId: string;
     execute: (interaction: ModalSubmitInteraction) => Promise<unknown>;
 }
-interface EventModule<E extends keyof ClientEvents> {
+interface EventModule<E extends keyof ClientEvents = keyof ClientEvents> {
     name: E;
     once?: boolean;
     execute: (...args: ClientEvents[E]) => Awaitable<void>;
