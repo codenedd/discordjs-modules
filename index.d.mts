@@ -1,4 +1,4 @@
-import { ButtonInteraction, AnySelectMenuInteraction, ModalSubmitInteraction, ClientEvents, SlashCommandBuilder, ChatInputCommandInteraction, AutocompleteInteraction, Client, Collection } from 'discord.js';
+import { ButtonInteraction, AnySelectMenuInteraction, ModalSubmitInteraction, ClientEvents, Awaitable, SlashCommandBuilder, ChatInputCommandInteraction, AutocompleteInteraction, Client, Collection } from 'discord.js';
 
 interface ButtonModule {
     customId: string;
@@ -12,10 +12,10 @@ interface ModalModule {
     customId: string;
     execute: (interaction: ModalSubmitInteraction) => Promise<unknown>;
 }
-interface EventModule {
-    name: keyof ClientEvents;
+interface EventModule<E extends keyof ClientEvents> {
+    name: E;
     once?: boolean;
-    execute: (...args: any[]) => Promise<void>;
+    execute: (...args: ClientEvents[E]) => Awaitable<void>;
 }
 interface CommandModule {
     data: SlashCommandBuilder;
