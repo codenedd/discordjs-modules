@@ -85,7 +85,8 @@ function readEvents(modules, rootDir) {
         if (globalEvent.name.endsWith(".ts") || globalEvent.name.endsWith(".js")) {
           const eventPath = `${globalEventsPath}/${globalEvent.name}`;
           const eventData = require(eventPath);
-          eventsCollection.set("global", eventData);
+          const existsEvents = eventsCollection.get("global") ?? [];
+          eventsCollection.set("global", [...existsEvents, eventData]);
         }
       }
     }
@@ -101,7 +102,8 @@ function readEvents(modules, rootDir) {
             if (event.name.endsWith(".ts") || event.name.endsWith(".js")) {
               const eventPath = `${eventsPath}/${event.name}`;
               const eventData = require(eventPath);
-              eventsCollection.set(`${module2.name}-event-${event.name}`, eventData);
+              const existsEvents = eventsCollection.get(module2.name) ?? [];
+              eventsCollection.set(module2.name, [...existsEvents, eventData]);
             }
           }
         }
@@ -275,6 +277,19 @@ async function synchronizeSlashCommands(client, token, commands) {
   })();
 }
 
+// src/interactions/events-interactions.ts
+function handleEvents(client, events) {
+  console.log("\x1B[33m%s\x1B[0m", "--------------------------------------------------");
+  console.log("\x1B[33m%s\x1B[0m", "------------- Creating client events -------------");
+  for (const [moduleName, eventArr] of events) {
+    console.log("\x1B[33m%s\x1B[0m", `--------- ${moduleName} events ---------`);
+    for (const event of eventArr) {
+      event.once ? client.once(event.name, (...args) => event.execute(...args)) : client.on(event.name, (...args) => event.execute(...args));
+      console.log("\x1B[35m%s\x1B[0m", `Created ${event.name} event.`);
+    }
+  }
+}
+
 // src/discordjs-modules.ts
 var DiscordJSModules = {
   init(client, token, options) {
@@ -303,12 +318,7 @@ var DiscordJSModules = {
         console.log(err);
       }
     });
-    console.log("\x1B[33m%s\x1B[0m", "--------------------------------------------------");
-    console.log("\x1B[33m%s\x1B[0m", "------------- Creating client events -------------");
-    for (const [eventName, eventModule] of modules.events) {
-      eventModule.once ? client.once(eventModule.name, (...args) => eventModule.execute(...args)) : client.on(eventModule.name, (...args) => eventModule.execute(...args));
-      console.log("\x1B[35m%s\x1B[0m", `Created ${eventModule.name} event from ${eventName} module.`);
-    }
+    handleEvents(client, modules.events);
   }
 };
 // Annotate the CommonJS export names for ESM import in node:
