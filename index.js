@@ -101,7 +101,7 @@ function readEvents(modules, rootDir) {
             if (event.name.endsWith(".ts") || event.name.endsWith(".js")) {
               const eventPath = `${eventsPath}/${event.name}`;
               const eventData = require(eventPath);
-              eventsCollection.set(module2.name, eventData);
+              eventsCollection.set(`${module2.name}-event-${event.name}`, eventData);
             }
           }
         }
