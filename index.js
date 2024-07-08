@@ -212,8 +212,8 @@ function handleModalsInteraction(interaction, modals) {
 
 // src/interactions/commands-interactions.ts
 var import_discord = require("discord.js");
-async function handleCommandsInteraction(client, interaction, commands) {
-  if (interaction.isChatInputCommand()) {
+async function handleCommandsInteraction(client, interaction) {
+  if (interaction.isChatInputCommand() || interaction.isContextMenuCommand()) {
     console.time("[DISCORDJS MODULES] Command interaction execute time");
     const command = client.commands.get(interaction.commandName);
     if (!command) {
@@ -310,7 +310,7 @@ var DiscordJSModules = {
     });
     client.on(import_discord3.Events.InteractionCreate, async (interaction) => {
       try {
-        await handleCommandsInteraction(moduleClient, interaction, modules.commands);
+        await handleCommandsInteraction(moduleClient, interaction);
         handleButtonsInteraction(interaction, modules.buttons);
         handleMenusInteraction(interaction, modules.menus);
         handleModalsInteraction(interaction, modules.modals);

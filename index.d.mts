@@ -1,4 +1,4 @@
-import { ButtonInteraction, AnySelectMenuInteraction, ModalSubmitInteraction, ClientEvents, Awaitable, SlashCommandBuilder, ChatInputCommandInteraction, AutocompleteInteraction, Client, Collection } from 'discord.js';
+import { ButtonInteraction, AnySelectMenuInteraction, ModalSubmitInteraction, ClientEvents, Awaitable, SlashCommandBuilder, ContextMenuCommandBuilder, AutocompleteInteraction, Client, Collection, ChatInputCommandInteraction, ContextMenuCommandInteraction } from 'discord.js';
 
 interface ButtonModule {
     customId: string;
@@ -17,14 +17,15 @@ interface EventModule<E extends keyof ClientEvents> {
     once?: boolean;
     execute: (...args: ClientEvents[E]) => Awaitable<void>;
 }
-interface CommandModule {
-    data: SlashCommandBuilder;
+type CommandInteractionType<T> = T extends SlashCommandBuilder ? ChatInputCommandInteraction : T extends ContextMenuCommandBuilder ? ContextMenuCommandInteraction : never;
+interface CommandModule<K extends SlashCommandBuilder | ContextMenuCommandBuilder> {
+    data: K;
     cooldown?: number;
-    execute: (interaction: ChatInputCommandInteraction) => Promise<any>;
+    execute: (interaction: CommandInteractionType<K>) => Promise<any>;
     autocomplete?(interaction: AutocompleteInteraction): Promise<any>;
 }
 interface ModulesClient extends Client {
-    commands: Map<string, CommandModule>;
+    commands: Map<string, CommandModule<SlashCommandBuilder | ContextMenuCommandBuilder>>;
     cooldowns: Collection<string, Collection<string, number>>;
 }
 interface InitOptions {
