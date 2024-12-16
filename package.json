@@ -1,22 +1,24 @@
 {
-  "name": "@private/discordjs-modules",
-  "version": "0.2.0",
-  "description": "Discord.js modules handler that allows you handle all discord components like menus, modals and button in one module directory.",
+  "name": "discordjs-modules",
+  "version": "0.3.0",
+  "description": "Discord.js modules handler that allows you handle all discord components and interactions like menus, modals, button, events and commands in one module directory.",
+  "keywords": [
+    "discordjs",
+    "module",
+    "handler",
+    "bot",
+    "command",
+    "event",
+    "component"
+  ],
   "main": "index.js",
   "module": "index.mjs",
   "types": "index.d.ts",
-  "scripts": {
-    "dev": "nodemon src/index.ts",
-    "build": "tsup"
+  "author": "codened (https://github.com/codenedd)",
+  "repository": {
+    "url": "https://github.com/codenedd/discordjs-modules"
   },
-  "author": "codened",
-  "license": "ISC",
-  "devDependencies": {
-    "nodemon": "^3.1.0",
-    "ts-node": "^10.9.2",
-    "tsup": "^8.0.2",
-    "typescript": "^5.4.4"
-  },
+  "license": "MIT",
   "dependencies": {
     "discord.js": "^14.14.1"
   }

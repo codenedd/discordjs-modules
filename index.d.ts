@@ -31,9 +31,16 @@ interface ModulesClient extends Client {
 interface InitOptions {
     srcDir?: string;
 }
+interface Modules {
+    commands: Map<string, CommandModule<SlashCommandBuilder | ContextMenuCommandBuilder>>;
+    events: Map<string, EventModule<keyof ClientEvents>[]>;
+    buttons: Map<string, ButtonModule>;
+    menus: Map<string, MenuModule>;
+    modals: Map<string, ModalModule>;
+}
 
 declare const DiscordJSModules: {
-    init(client: Client, token: string, options?: InitOptions): void;
+    init(client: Client, token: string, options?: InitOptions): Promise<void>;
 };
 
-export { type ButtonModule, type CommandModule, DiscordJSModules, type EventModule, type InitOptions, type MenuModule, type ModalModule, type ModulesClient };
+export { type ButtonModule, type CommandModule, DiscordJSModules, type EventModule, type InitOptions, type MenuModule, type ModalModule, type Modules, type ModulesClient };
