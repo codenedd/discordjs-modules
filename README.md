@@ -1,3 +1,6 @@
+
+![djsmodules-tło](https://github.com/user-attachments/assets/ed7ca5c0-38ab-448c-b18a-b7b1f8f4f350)
+
 # discordjs-modules
 
 Discord.js modules handler that **allows you handle all discord components (like menus, modals and buttons), events and commands in one module directory**. You can easily add new features or remove old ones, just add or remove a module (folder) from the modules directory.
